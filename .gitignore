@@ -1,0 +1,14 @@
+# CMake
+build/
+
+# Qt Deployment
+bin/
+lib/
+plugins/
+share/
+
+# Executables and Libraries
+*.exe
+*.dll
+*.AppImage
+*.so

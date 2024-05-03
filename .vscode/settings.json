@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "CmakeLists.txt": "cmake",
+        "*.inc": "cpp",
+        "*.ui": "xml",
+        "qapplication": "cpp"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "cmake.preferredGenerators": [
+        "Ninja"
+    ],
+    "cmake.configureArgs": [
+        "-D CMAKE_EXPORT_COMPILE_COMMANDS=1",
+    ],
+}

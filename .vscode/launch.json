@@ -1,0 +1,74 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // NOTE: Do not use '~' in UNIX-like OSes, use ${userHome}, this the reference for variables
+    //       https://code.visualstudio.com/docs/editor/variables-reference#_predefined-variables
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(lldb) Launch",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "terminal": "integrated",
+            "stopOnEntry": false,
+            "env": {
+                "PATH": "$PATH:${command:cmake.launchTargetDirectory}"
+            },
+            "initCommands": [
+                "settings set target.process.follow-fork-mode parent"
+            ]
+        },
+        {
+            "name": "(gdb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "$PATH:${command:cmake.launchTargetDirectory}"
+                }
+            ],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Fork follows Parent process, switch to child for debugging child",
+                    "text": "set follow-fork-mode parent",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Fork will keep the other process attached to debugger",
+                    "text": "set detach-on-fork off",
+                    "ignoreFailures": true
+                }
+            ],
+            "visualizerFile": "/home/wjsoe/.config/Code/User/workspaceStorage/e67ed87570381e9a59733ef5e133d858/tonka3000.qtvsctools/qt.natvis.xml"
+        },
+        {
+            "name": "(cppvsdbg) Launch",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${command:cmake.launchTargetPath}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart",
+            "visualizerFile": "/home/wjsoe/.config/Code/User/workspaceStorage/e67ed87570381e9a59733ef5e133d858/tonka3000.qtvsctools/qt.natvis.xml"
+        }
+    ]
+}
