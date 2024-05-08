@@ -52,7 +52,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin) # shared library .so
 set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}) # .pdb for debugging
 
 # Make sure QTDIR environment variable is set
-if(NOT $ENV{QTDIR})
+if(NOT DEFINED ENV{QTDIR})
     if(UNIX)
         # Attempt to search version directories
         file(GLOB QTDIR_TEMP $ENV{HOME}/Qt/[0-9].[0-9].[0-9])
