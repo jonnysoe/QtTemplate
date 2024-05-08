@@ -23,9 +23,20 @@ sudo apt install -y libglewmx-dev freeglut3-dev freeglut3 mesa-common-dev
 - [Qt Framework](https://www.qt.io/download-open-source) - needs to be installed manually
 - [linuxdeployqt](https://github.com/probonopd/linuxdeployqt) - optional, see [walkthrough](https://wiki.qt.io/Deploying_a_Qt5_Application_Linux) for more information
 
+#### Alternative Qt Framework installation with aqtinstall
+```
+mkdir -p ~/Qt
+cd ~/Qt
+aqt install-qt linux desktop 6.7.0
+```
+
 ## Build
+Optionally set Environment variable:
 ```
 export QTDIR=~/Qt/6.7.0/gcc_64
+```
+Build and execute:
+```
 cmake -S . -B build -G Ninja && cmake --build build
 ./bin/QtTemplate
 ```
