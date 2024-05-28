@@ -53,14 +53,27 @@ set(CMAKE_PDB_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}) # .pdb for debugging
 
 # Make sure QTDIR environment variable is set
 if(NOT DEFINED ENV{QTDIR})
+    # Attempt to search default version directories
     if(UNIX)
-        # Attempt to search version directories
-        file(GLOB QTDIR_TEMP $ENV{HOME}/Qt/[0-9].[0-9].[0-9])
+        file(GLOB QTDIR_TEMP $ENV{HOME}/Qt/[0-9].*)
+
+        # Match latest version directory
         if(EXISTS ${QTDIR_TEMP})
-            # Match latest version directory
             list(GET QTDIR_TEMP -1 QTDIR_TEMP)
             if(EXISTS ${QTDIR_TEMP}/gcc_64)
                 set(QTDIR ${QTDIR_TEMP}/gcc_64)
+                set(ENV{QTDIR} ${QTDIR})
+            endif()
+        endif()
+    else()
+        # Windows
+        file(GLOB QTDIR_TEMP C:/Qt/[0-9].*)
+
+        # Match latest version directory
+        if(EXISTS ${QTDIR_TEMP})
+            list(GET QTDIR_TEMP -1 QTDIR_TEMP)
+            if(EXISTS ${QTDIR_TEMP}/msvc2019_64)
+                set(QTDIR ${QTDIR_TEMP}/msvc2019_64)
                 set(ENV{QTDIR} ${QTDIR})
             endif()
         endif()
@@ -106,7 +119,7 @@ if(UNIX)
 else()
     # Windows
     # https://wiki.qt.io/Deploy_an_Application_on_Windows
-    message(FATAL_ERROR "Need to prepare deployqt for Windows!")
+    message(WARNING "Need to prepare deployqt for Windows!")
 endif()
 
 #======================= INCLUSION OF Qt =======================#
@@ -154,11 +167,6 @@ endif()
 
 # Add the forms directory to the AUTOUIC search paths
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_AUTOUIC_SEARCH_PATHS} ${FORMS_DIR})
-
-# Add WIN32 so that Windows won't have a terminal popup alongside the GUI.
-if (WIN32)
-    set(SOURCES ${SOURCES} WIN32)
-endif()
 
 # Add the executable
 add_executable(${ProjectId} ${SOURCES})

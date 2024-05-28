@@ -16,7 +16,15 @@
             "terminal": "integrated",
             "stopOnEntry": false,
             "env": {
-                "PATH": "$PATH:${command:cmake.launchTargetDirectory}"
+                "PATH": "${env:PATH}:${command:cmake.launchTargetDirectory}"
+            },
+            "windows": {
+                // Warning: CodeLLDB is still slower than WinDbg (cppvsdbg) in Windows, and don't support string/vector
+                "env": {
+                    // add the directory where our target was built to the PATHs
+                    // it gets resolved by CMake Tools:
+                    "PATH": "${env:PATH};${command:cmake.launchTargetDirectory};C:/Qt/6.7.0/msvc2019_64/bin"
+                }
             },
             "initCommands": [
                 "settings set target.process.follow-fork-mode parent"
@@ -55,7 +63,6 @@
                     "ignoreFailures": true
                 }
             ],
-            "visualizerFile": "/home/wjsoe/.config/Code/User/workspaceStorage/e67ed87570381e9a59733ef5e133d858/tonka3000.qtvsctools/qt.natvis.xml"
         },
         {
             "name": "(cppvsdbg) Launch",
@@ -65,10 +72,17 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
+            "environment": [
+                {
+                    // add the directory where our target was built to the PATHs
+                    // it gets resolved by CMake Tools:
+                    "name": "PATH",
+                    "value": "%PATH%;${command:cmake.launchTargetDirectory};C:/Qt/6.7.0/msvc2019_64/bin"
+                }
+            ],
+
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
-            "visualizerFile": "/home/wjsoe/.config/Code/User/workspaceStorage/e67ed87570381e9a59733ef5e133d858/tonka3000.qtvsctools/qt.natvis.xml"
         }
     ]
 }

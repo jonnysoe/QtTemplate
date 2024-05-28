@@ -12,4 +12,5 @@
     "cmake.configureArgs": [
         "-D CMAKE_EXPORT_COMPILE_COMMANDS=1",
     ],
+    "cmake.options.statusBarVisibility": "compact",
 }
