@@ -1,13 +1,11 @@
 @echo off
 
-:: CD to script directory so that this can be call from anywhere
+:: Call with script directory so that this can be call from anywhere
+:: NOTE: %~dp0 ends with directory separator
 set SCRIPT_PATH=%~dp0
-pushd %SCRIPT_PATH%
 
 :: Passthrough to PowerShell
-powershell -File install.ps1
-set SCRIPT_ERROR=%ERRORLEVEL%
+powershell -File %SCRIPT_PATH%install.ps1
 
 :: exit
-popd
-exit /b %SCRIPT_ERROR%
+exit /b %ERRORLEVEL%

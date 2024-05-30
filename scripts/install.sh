@@ -23,29 +23,29 @@ function install_deb() {
 
     # Optional LLVM/Clang 17 for developer
     local clangv=17
-    if command -v clang-${clangv} &> /dev/null; then
+    if ! command -v clang-${clangv} &> /dev/null; then
         wget https://apt.llvm.org/llvm.sh
         chmod a+x llvm.sh
         sudo ./llvm.sh ${clangv} all
         rm -f ./llvm.sh
 
         # Don't overwrite symlinks, so that the default version can stick around when developer set it
-        if command -v clang &> /dev/null; then
+        if ! command -v clang &> /dev/null; then
             sudo ln -sfT `command -v clang-${clangv}` /usr/bin/clang
         fi
-        if command -v clang++ &> /dev/null; then
+        if ! command -v clang++ &> /dev/null; then
             sudo ln -sfT `command -v clang++-${clangv}` /usr/bin/clang++
         fi
-        if command -v clang-cl &> /dev/null; then
+        if ! command -v clang-cl &> /dev/null; then
             sudo ln -sfT `command -v clang-cl-${clangv}` /usr/bin/clang-cl
         fi
-        if command -v clangd &> /dev/null; then
+        if ! command -v clangd &> /dev/null; then
             sudo ln -sfT `command -v clangd-${clangv}` /usr/bin/clangd
         fi
-        if command -v clang-format &> /dev/null; then
+        if ! command -v clang-format &> /dev/null; then
             sudo ln -sfT `command -v clang-format-${clangv}` /usr/bin/clang-format
         fi
-        if command -v clang-tidy &> /dev/null; then
+        if ! command -v clang-tidy &> /dev/null; then
             sudo ln -sfT `command -v clang-tidy-${clangv}` /usr/bin/clang-tidy
         fi
     fi
@@ -58,7 +58,7 @@ function install_deb() {
     sudo apt install -y libglewmx-dev freeglut3-dev freeglut3 mesa-common-dev
 
     if command -v python &> /dev/null; then
-        # Install aqtinstal
+        # Install aqtinstall
         # NOTE: pip list will push notice in stderr so ignore stream 2 before grep
         pip list 2> /dev/null | grep aqtinstall > /dev/null
         if [[ $? -ne 0 ]]; then
@@ -102,7 +102,7 @@ function install_deb() {
         popd > /dev/null
     fi
 
-    # @todo Check for installed packages and exit with error code if any
+    # @todo Check for installed packages and exit with error code if any is missing
 }
 
 function install_rpm() {
@@ -129,7 +129,8 @@ case `uname` in
         ;;
     *)
         # Assumed to be Windows, pass over to PowerShell
-        powershell -File ./install.ps1
+        # NOTE: Too many different flavors of Windows (with or without NT keyword) so lump them in asterisk
+        powershell -File install.ps1
         exit ${?}
         ;;
 esac
