@@ -12,3 +12,6 @@ share/
 *.dll
 *.AppImage
 *.so
+
+# Misc
+temp/
