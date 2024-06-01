@@ -5,6 +5,7 @@
     // List of extensions which should be recommended for users of this workspace.
     "recommendations": [
         "ms-vscode.cmake-tools",
+        "ms-vscode.PowerShell",
         "vadimcn.vscode-lldb",
     ],
 }
