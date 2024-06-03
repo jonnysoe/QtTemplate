@@ -5,6 +5,22 @@ https://youtu.be/XiMplRfuFJc
 
 ## Requirements
 
+There requirements can be installed with the dependency installer script.
+
+Linux:
+```
+./scripts/install.sh
+```
+Windows (cmd):
+```
+.\scripts\install.cmd
+```
+Windows (powershell):
+```
+Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force
+.\scripts\install.ps1
+```
+
 - [CMake](https://cmake.org/download/)
 - [Ninja](https://ninja-build.org/)
 - C++ Compiler ([gcc](https://gcc.gnu.org/releases.html), [clang](https://llvm.org/), [msvc](https://visualstudio.microsoft.com/visual-cpp-build-tools/))

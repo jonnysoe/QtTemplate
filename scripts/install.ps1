@@ -196,7 +196,8 @@ function Install-Aria2 {
         # https://github.com/aria2/aria2/releases/latest
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -230,7 +231,8 @@ function Install-7z {
         # https://www.7-zip.org/download.html
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -265,7 +267,8 @@ function Install-Cmake {
         # https://github.com/Kitware/CMake/releases/latest
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -300,7 +303,8 @@ function Install-Ninja {
         # https://github.com/ninja-build/ninja/releases/latest
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -334,7 +338,8 @@ function Install-Ccache {
         # https://github.com/ccache/ccache/releases/latest
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -358,7 +363,7 @@ function Install-Ccache {
 
 # Unique Executable
 function Install-Msvc {
-    $program = "Get-Command"
+    $program = "dummy"
     # Check if command is valid
     $ret = !! (Get-Command $program -ErrorAction SilentlyContinue)
     if (! $ret) {
@@ -368,7 +373,8 @@ function Install-Msvc {
         # https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -407,7 +413,8 @@ function Install-Llvm {
         # https://github.com/llvm/llvm-project/releases/latest
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)
@@ -435,7 +442,8 @@ function Install-Llvm {
 # Unique Executable
 # Requires MSVC in pip (since 3.11)
 function Install-Python {
-    $program = "python"
+    # Use pip instead, because Windows comes with a dummy $env:LOCALAPPDATA\Microsoft\WindowsApps\python.exe
+    $program = "pip"
     # Check if command is valid
     $ret = !! (Get-Command $program -ErrorAction SilentlyContinue)
     if (! $ret) {
@@ -445,7 +453,8 @@ function Install-Python {
         # https://www.python.org/downloads/
 
         # Check if program was installed
-        if (Empty-Directory "$dir") {
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
             # Download
             $file = Download $link
             $ret = !! ($file)

@@ -5,6 +5,7 @@
 set SCRIPT_PATH=%~dp0
 
 :: Passthrough to PowerShell
+PowerShell -Command "Set-ExecutionPolicy Unrestricted -Scope LocalMachine -Force"
 powershell -File %SCRIPT_PATH%install.ps1
 
 :: exit
