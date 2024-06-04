@@ -411,25 +411,25 @@ function Install-Git {
 
         # Configure
         if (! (git config --global user.name)) {
-            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "git config --global user.name $env:USERNAME") -Wait
+            Start-Process "$env:ProgramFiles\Git\bin\sh.exe" @("--login", "-c", "git config --global user.name $env:USERNAME") -Wait
         }
 
         if (git config --global pull.rebase | Select-String -Pattern "false") {
-            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "git config --global pull.rebase true") -Wait
+            Start-Process "$env:ProgramFiles\Git\bin\sh.exe" @("--login", "-c", "git config --global pull.rebase true") -Wait
         }
 
         if (! (Test-Path "$env:USERPROFILE\.ssh\id_rsa.pub")) {
-            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keygen -q -t rsa -N '' <<< `$'\ny' >/dev/null 2>&1") -Wait
+            Start-Process "$env:ProgramFiles\Git\bin\sh.exe" @("--login", "-c", "ssh-keygen -q -t rsa -N '' <<< `$'\ny' >/dev/null 2>&1") -Wait
         }
 
         # Add github.com in known_hosts
         if (! (Select-String -Path "$env:USERPROFILE\.ssh\known_hosts" -Pattern "github.com")) {
-            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan github.com >> ~/.ssh/known_hosts") -Wait
+            Start-Process "$env:ProgramFiles\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan github.com >> ~/.ssh/known_hosts") -Wait
         }
 
         # Add gitlab.com in known_hosts
         if (! (Select-String -Path "$env:USERPROFILE\.ssh\known_hosts" -Pattern "gitlab.com")) {
-            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan gitlab.com >> ~/.ssh/known_hosts") -Wait
+            Start-Process "$env:ProgramFiles\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan gitlab.com >> ~/.ssh/known_hosts") -Wait
         }
     }
 
