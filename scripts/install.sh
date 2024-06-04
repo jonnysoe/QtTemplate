@@ -17,6 +17,7 @@ pushd ${SCRIPT_DIR} > /dev/null
 function install_deb() {
     # Essential C++ (GCC)
     sudo apt install -y \
+        git \
         build-essential \
         cmake ninja-build ccache \
         python3-dev python-is-python3

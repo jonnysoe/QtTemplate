@@ -212,7 +212,9 @@ function Install-Aria2 {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
@@ -248,7 +250,9 @@ function Install-7z {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
@@ -284,7 +288,9 @@ function Install-Cmake {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
@@ -319,7 +325,9 @@ function Install-Ninja {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
@@ -354,10 +362,78 @@ function Install-Ccache {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
+
+    return $ret
+}
+
+# Unique Executable
+function Install-Git {
+    $program = "git"
+    # Check if command is valid
+    $ret = !! (Get-Command $program -ErrorAction SilentlyContinue)
+    if (! $ret) {
+        $name = "Git"
+        $dir = "$env:ProgramFiles\Git\cmd"
+        $link = "https://github.com/git-for-windows/git/releases/download/v2.45.2.windows.1/Git-2.45.2-64-bit.exe"
+        # https://www.git-scm.com/download/win
+
+        # Check if program was installed
+        $ret = ! (Empty-Directory "$dir")
+        if (! $ret) {
+            # Download
+            $file = Download $link
+            $ret = !! ($file)
+
+            # Install
+            if ($ret) {
+                Write-Console "Installing $name . . ."
+
+                # Install in quiet/silent mode
+                Start-Process "$file" -ArgumentList @("/VERYSILENT", "/NORESTART") -Wait
+                $ret = $?
+
+                if ($ret) {
+                    Write-Console "Successfully installed $name."
+                }
+            }
+        }
+    }
+
+    if ($ret) {
+        # Add or fix missing PATH
+        Append-Path "$dir"
+
+        # Configure
+        if (! (git config --global user.name)) {
+            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "git config --global user.name $env:USERNAME") -Wait
+        }
+
+        if (git config --global pull.rebase | Select-String -Pattern "false") {
+            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "git config --global pull.rebase true") -Wait
+        }
+
+        if (! (Test-Path "$env:USERPROFILE\.ssh\id_rsa.pub")) {
+            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keygen -q -t rsa -N '' <<< `$'\ny' >/dev/null 2>&1") -Wait
+        }
+
+        # Add github.com in known_hosts
+        if (! (Select-String -Path "$env:USERPROFILE\.ssh\known_hosts" -Pattern "github.com")) {
+            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan github.com >> ~/.ssh/known_hosts") -Wait
+        }
+
+        # Add gitlab.com in known_hosts
+        if (! (Select-String -Path "$env:USERPROFILE\.ssh\known_hosts" -Pattern "gitlab.com")) {
+            Start-Process "%PROGRAMFILES%\Git\bin\sh.exe" @("--login", "-c", "ssh-keyscan gitlab.com >> ~/.ssh/known_hosts") -Wait
+        }
+    }
+
+
     return $ret
 }
 
@@ -393,10 +469,13 @@ function Install-Msvc {
                 }
             }
         }
-
-        # MSVC does not add PATH
-        # Append-Path "$dir"
     }
+
+    # MSVC does not add PATH
+    # if ($ret) {
+    #     # Add or fix missing PATH
+    #     Append-Path "$dir"
+    # }
     return $ret
 }
 
@@ -432,7 +511,9 @@ function Install-Llvm {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
         Append-Path "$dir"
     }
@@ -472,9 +553,11 @@ function Install-Python {
                 }
             }
         }
+    }
 
+    if ($ret) {
         # Add or fix missing PATH
-        Prepend-Path "$dir"
+        Append-Path "$dir"
         Prepend-Path "$dir\Scripts"
     }
     return $ret
@@ -551,6 +634,9 @@ function Script-Main {
     }
     if (! (Install-Ccache)) {
         Write-Console ">> Error while installing Ccache!"
+    }
+    if (! (Install-Git)) {
+        Write-Console ">> Error while installing Git!"
     }
     if (! (Install-Msvc)) {
         Write-Console ">> Error while installing MSVC!"
