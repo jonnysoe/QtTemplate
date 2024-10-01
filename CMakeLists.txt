@@ -157,7 +157,9 @@ file(GLOB_RECURSE SOURCES
 )
 
 # Add embedded manifest(s)
-list(APPEND SOURCES longpath.manifest)
+if(WIN32)
+    list(APPEND SOURCES longpath.manifest)
+endif()
 
 #=================== SETUP EXECTUABLE ====================#
 # Enable debug logging on RELWITHDEBINFO configuration
