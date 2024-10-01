@@ -3,12 +3,16 @@
         "CmakeLists.txt": "cmake",
         "*.inc": "cpp",
         "*.ui": "xml",
-        "qapplication": "cpp"
+        "qapplication": "cpp",
+        "*.manifest": "xml",
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "cmake.preferredGenerators": [
         "Ninja"
     ],
+    // Workaround for MSVC bug overriding cmake.preferredGenerators
+    // https://github.com/microsoft/vscode-cmake-tools/issues/4095
+    "cmake.generator": "Ninja",
     "cmake.configureArgs": [
         "-D CMAKE_EXPORT_COMPILE_COMMANDS=1",
     ],

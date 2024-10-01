@@ -156,6 +156,9 @@ file(GLOB_RECURSE SOURCES
     ${SOURCE_DIR}/*.cpp
 )
 
+# Add embedded manifest(s)
+list(APPEND SOURCES longpath.manifest)
+
 #=================== SETUP EXECTUABLE ====================#
 # Enable debug logging on RELWITHDEBINFO configuration
 # Multi-config
@@ -173,6 +176,22 @@ add_executable(${ProjectId} ${SOURCES})
 
 #===================== LINKING LIBRARIES =======================#
 target_link_libraries(${ProjectId} Qt6::Widgets)
+
+if(WIN32)
+    # Workaround in Windows for the lack of SO PATH or RPATH
+    # Create symbolic link (aka junction point) to Qt libraries
+    # NOTE: mklink only accepts native path separator
+    file(TO_NATIVE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bin SYM_BIN)
+    file(TO_NATIVE_PATH ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/plugins SYM_PLUGINS)
+    file(TO_NATIVE_PATH ${QTDIR}/bin QT_BIN)
+    file(TO_NATIVE_PATH ${QTDIR}/plugins QT_PLUGINS)
+    add_custom_command(TARGET ${ProjectId} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove -f ${SYM_BIN}
+        COMMAND ${CMAKE_COMMAND} -E remove -f ${SYM_PLUGINS}
+        COMMAND mklink /j ${SYM_BIN} ${QT_BIN}
+        COMMAND mklink /j ${SYM_PLUGINS} ${QT_PLUGINS}
+    )
+endif()
 
 if(${QT_DEPLOY})
     if(UNIX)
